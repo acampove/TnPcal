@@ -102,12 +102,14 @@ def get_data(kind = 'simple', obs : zfit.Space | None = None):
 
     arr_prs, arr_prb = _get_purities(arr_sig, arr_bkg)
     arr_trs, arr_trb = _get_targets(arr_sig, arr_bkg)
+    arr_bns, arr_bnb = _get_targets(arr_sig, arr_bkg)
 
     arr_mas = numpy.concatenate([arr_sig, arr_bkg])
     arr_pur = numpy.concatenate([arr_prs, arr_prb])
     arr_tgt = numpy.concatenate([arr_trs, arr_trb])
+    arr_bin = numpy.concatenate([arr_bns, arr_bnb])
 
-    d_data  = {'mass' : arr_mas, 'purity' : arr_pur, 'target' : arr_tgt}
+    d_data  = {'mass' : arr_mas, 'purity' : arr_pur, 'target' : arr_tgt, 'var_bin' : arr_bin}
 
     return pnd.DataFrame(d_data)
 #------------------------------------------------------
