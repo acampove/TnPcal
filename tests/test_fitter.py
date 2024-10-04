@@ -12,7 +12,7 @@ def test_simple():
     '''
     df  = tut.get_data()
     mod = tut.get_model()
-    cfg = tut.get_config() 
+    cfg = tut.get_config()
 
     obj = Fitter(data=df, model=mod, cfg=cfg)
     obj.run()
