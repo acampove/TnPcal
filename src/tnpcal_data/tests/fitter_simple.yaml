@@ -1,0 +1,7 @@
+observable:
+    name    : mass
+    min_val : 5000
+    max_val : 6000
+selection:
+    tag   : 'purity > 0.8'
+    probe : 'quantity'
