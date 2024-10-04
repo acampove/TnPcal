@@ -4,7 +4,7 @@ observable:
     max_val : 6000
 selection:
     tag   : 'purity > 0.8'
-    probe : 'target'
+    probe : 'target > 0.1'
 binning:
     - 0.0 < var_bin < 0.2
     - 0.2 < var_bin < 0.5
