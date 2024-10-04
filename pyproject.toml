@@ -1,0 +1,17 @@
+[project]
+name        = 'TnPcal'
+version     = '0.0.1'
+dependencies= ['zfit', 'pandas'] 
+
+[project.optional-dependencies]
+dev  = ['pytest']
+
+[tools.setuptools.packages.find]
+where   = ['src']
+
+[project.scripts]
+
+[tool.setuptools.package-data]
+tnpcal_data=[]
+
+[tool.setuptools]
