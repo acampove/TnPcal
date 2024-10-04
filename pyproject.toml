@@ -1,7 +1,7 @@
 [project]
 name        = 'TnPcal'
 version     = '0.0.1'
-dependencies= ['zfit', 'pandas']
+dependencies= ['zfit', 'pandas', 'rx_scripts']
 
 [project.optional-dependencies]
 dev  = ['pytest']
