@@ -34,7 +34,7 @@ Thus a tagging requirement is needed. Once the tagging is done, we fit and extra
 ## Fitting approach
 
 ```python
-from tnpcal import Fitter as TnPFitter
+from tnpcal.fitter import Fitter as TnPFitter
 
 obj = TnPFitter(data=df, model=mod, cfg=cfg)
 obj.run()
@@ -53,5 +53,8 @@ observable:
     name    : mass
     min_val : 5000
     max_val : 6000
+selection:
+    tag   : 'purity > 0.8' #Quantity that drives signal purity, e.g 1 means only signal 0 means full mix
+    probe : 'quantity'     #Quantity, whose efficiency needs to be measured
 ```
 
