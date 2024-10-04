@@ -3,10 +3,15 @@ observable:
     min_val : 5000
     max_val : 6000
 selection:
-    tag   : 'purity > 0.8'
+    tag   : 'purity > 0.5'
     probe : 'target > 0.1'
 binning:
     - 0.0 < var_bin < 0.2
     - 0.2 < var_bin < 0.5
     - 0.5 < var_bin < 0.8
     - 0.8 < var_bin < 1.0
+plotting:
+    out_dir : '/home/acampove/Packages/TnPcal/output'
+    min_x   : 5000
+    max_x   : 6000
+    nbins   : 50
