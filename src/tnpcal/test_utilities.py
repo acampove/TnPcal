@@ -77,7 +77,7 @@ def _get_targets(arr_sig, arr_bkg):
     '''
 
     arr_tgs = numpy.random.uniform(low=0, high=1, size=arr_sig.size)
-    arr_tgb = numpy.random.normal(loc=0, scale=0.3, size=arr_bkg.size)
+    arr_tgb = numpy.random.normal(loc=0, scale=0.8, size=arr_bkg.size)
 
     return arr_tgs, arr_tgb
 #------------------------------------------------------
@@ -94,8 +94,8 @@ def get_data(kind = 'simple', obs : zfit.Space | None = None):
 
     [pdf_sig, pdf_bkg] = model.pdfs
 
-    sam_sig = pdf_sig.create_sampler(n=10_000)
-    sam_bkg = pdf_bkg.create_sampler(n=10_000)
+    sam_sig = pdf_sig.create_sampler(n=20_000)
+    sam_bkg = pdf_bkg.create_sampler(n=80_000)
 
     arr_sig = sam_sig.numpy().flatten()
     arr_bkg = sam_bkg.numpy().flatten()
