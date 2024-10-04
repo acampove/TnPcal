@@ -41,15 +41,33 @@ class Fitter:
 
         return 1, 1
     # ----------------------------------
+    def _get_tagged_df(self):
+        '''
+        Will apply tagging cut and return dataframe
+        '''
+
+        ntot = len(self._df)
+        cut_tag = self._cfg['selection']['tag']
+        df_tag  = self._df.query(cut_tag)
+        ntag = len(df_tag)
+
+        log.info(f'Tagging cut {cut_tag}')
+        log.info(f'{ntot:<30}{"--->":<30}{ntag:<30}')
+
+        return df_tag
+    # ----------------------------------
     def run(self):
         '''
         Will start calculation of efficiencies
         '''
 
+        df_tag = self._get_tagged_df()
         for cut in self._cfg['binning']:
-            log.info(f'Fitting for: {cut}')
+            df_bin = df_tag.query(cut)
+            nbin   = len(df_bin)
 
-            df_bin         = self._df.query(cut)
+            log.info(f'Fitting {nbin} entries for: {cut}')
+
             df_pas, df_fal = self._get_dset(df_bin)
 
             vpas, epas = self._fit(df_pas)
