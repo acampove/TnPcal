@@ -4,4 +4,9 @@ observable:
     max_val : 6000
 selection:
     tag   : 'purity > 0.8'
-    probe : 'quantity'
+    probe : 'target'
+binning:
+    - 0.0 < var_bin < 0.2
+    - 0.2 < var_bin < 0.5
+    - 0.5 < var_bin < 0.8
+    - 0.8 < var_bin < 1.0
