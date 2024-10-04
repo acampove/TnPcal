@@ -2,8 +2,11 @@
 Module containing utility functions needed by unit tests
 '''
 
+import os
 from dataclasses import dataclass
+from importlib.resources import files
 
+import yaml
 import numpy
 import zfit
 import pandas as pnd
@@ -107,4 +110,17 @@ def get_data(kind = 'simple', obs : zfit.Space | None = None):
     d_data  = {'mass' : arr_mas, 'purity' : arr_pur, 'target' : arr_tgt}
 
     return pnd.DataFrame(d_data)
+#------------------------------------------------------
+def get_config():
+    '''
+    Will load config from YAML file and return dictionary
+    '''
+    cfg_path = files('tnpcal_data').joinpath('tests/fitter_simple.yaml')
+    if not os.path.isfile(cfg_path):
+        raise FileNotFoundError(f'Cannot find: {cfg_path}')
+
+    with open(cfg_path, encoding='utf-8') as ifile:
+        cfg = yaml.safe_load(ifile)
+
+        return cfg
 #------------------------------------------------------
