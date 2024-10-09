@@ -3,6 +3,7 @@ Module containing Fitter class
 '''
 import os
 
+import ROOT
 import zfit
 import numpy
 import matplotlib.pyplot as plt

@@ -8,6 +8,7 @@ from importlib.resources import files
 
 import yaml
 import numpy
+import ROOT
 import zfit
 import pandas as pnd
 
