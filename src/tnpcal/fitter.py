@@ -12,8 +12,9 @@ from zfit.result       import FitResult
 
 import pandas as pnd
 
-from zutils.plot           import plot      as zfp
-from dmu.logging.log_store import LogStore
+from zutils.plot                  import plot      as zfp
+from dmu.logging.log_store        import LogStore
+from tnpcal.efficiency_calculator import EfficiencyCalculator
 
 log=LogStore.add_logger('tnpcal:fitter')
 #--------------------------------------------
