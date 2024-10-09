@@ -5,8 +5,17 @@ import os
 from importlib.resources import files
 
 import yaml
+import numpy
+import pytest
+
+from dmu.logging.log_store        import LogStore
+from ROOT                         import RDF
 from tnpcal.efficiency_calculator import EfficiencyCalculator
 
+# ------------------------------------------------------
+@pytest.fixture
+def _initialize():
+    LogStore.set_level('tnpcal:efficiency_calculator', 10)
 # ------------------------------------------------------
 def  _make_out_dir(name : str):
     '''
@@ -74,4 +83,20 @@ def test_load():
     eff_cal_2 = EfficiencyCalculator.from_json(json_path)
 
     assert eff_cal_1 == eff_cal_2
+# ------------------------------------------------------
+def test_read():
+    '''
+    Will test reading of efficiencies
+    '''
+
+    d_fit   = _load_yaml('tests/efficiency_calculator_simple.yaml')
+    eff_cal = EfficiencyCalculator()
+
+    for cut, d_yld in d_fit.items():
+        eff_cal[cut] = d_yld
+
+    d_data = {'x' : numpy.random.uniform(0, 5, 1000)}
+
+    rdf     = RDF.FromNumpy(d_data)
+    arr_eff = eff_cal.read_eff(rdf)
 # ------------------------------------------------------
