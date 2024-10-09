@@ -122,7 +122,7 @@ class Fitter:
 
         i_fit = 1
 
-        #eff_cal = EffCalculator()
+        eff_cal = EfficiencyCalculator()
         for cut in self._cfg['binning']:
             df_bin = df_tag.query(cut)
             nbin   = len(df_bin)
@@ -134,10 +134,10 @@ class Fitter:
             pas = self._fit(df_pas, label=f'Pass: {cut}', index=i_fit)
             fal = self._fit(df_fal, label=f'Fail: {cut}', index=i_fit)
 
-            #eff_cal[cut] = {'pas' : pas, 'fal' : fal}
+            eff_cal[cut] = {'pas' : pas, 'fal' : fal}
 
             i_fit     += 1
 
-        #out_dir = self._cfg['maps']['out_dir']
-        #eff_cal.save(path = f'{out_dir}/efficiencies.json')
+        out_dir = self._cfg['maps']['out_dir']
+        eff_cal.save(path = f'{out_dir}/efficiencies.json')
 #--------------------------------------------
