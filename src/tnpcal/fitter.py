@@ -49,7 +49,7 @@ class Fitter:
         Take dataframe with dataset after full selection
         Extract column with observable
         Fit model and plot fit
-        Return yield and error
+        Return tuple with fit yield and error
         '''
         nentries = len(df)
         log.info(f'Fitting {nentries} entries')
@@ -59,9 +59,14 @@ class Fitter:
         nll     = zfit.loss.ExtendedUnbinnedNLL(model=self._model, data=arr_obs)
         res     = self._min.minimize(nll)
 
-        self._plot_fit(data=arr_obs, res=res, label=label, index=index)
+        error_method = self._cfg['fitting']['error_method']
 
-        return 1, 1
+        self._plot_fit(data=arr_obs, res=res, label=label, index=index)
+        res.hesse(method=error_method)
+        res.freeze()
+        yld = self._get_fit_yield(res = res)
+
+        return yld
     # ----------------------------------
     def _plot_fit(self, data : numpy.ndarray, res : FitResult, label : str, index : int):
         '''
@@ -95,14 +100,29 @@ class Fitter:
 
         return df_tag
     # ----------------------------------
+    def _get_fit_yield(self, res : FitResult):
+        '''
+        Takes zfit Fit Result object
+
+        Returns tuple with signal yield and error
+        '''
+        sig_name = self._cfg['maps']['signal_name']
+        d_nsig   = res.params[sig_name]
+
+        val = d_nsig['value']
+        err = d_nsig['hesse']['error']
+
+        return val, err
+    # ----------------------------------
     def run(self):
         '''
         Will start calculation of efficiencies
         '''
-
         df_tag = self._get_tagged_df()
 
         i_fit = 1
+
+        #eff_cal = EffCalculator()
         for cut in self._cfg['binning']:
             df_bin = df_tag.query(cut)
             nbin   = len(df_bin)
@@ -111,13 +131,13 @@ class Fitter:
 
             df_pas, df_fal = self._get_dset(df_bin)
 
+            pas = self._fit(df_pas, label=f'Pass: {cut}', index=i_fit)
+            fal = self._fit(df_fal, label=f'Fail: {cut}', index=i_fit)
 
-            vpas, epas = self._fit(df_pas, label=f'Pass: {cut}', index=i_fit)
-            vfal, efal = self._fit(df_fal, label=f'Fail: {cut}', index=i_fit)
+            #eff_cal[cut] = {'pas' : pas, 'fal' : fal}
+
             i_fit     += 1
+
+        #out_dir = self._cfg['maps']['out_dir']
+        #eff_cal.save(path = f'{out_dir}/efficiencies.json')
 #--------------------------------------------
-
-
-
-
-
