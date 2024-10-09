@@ -84,19 +84,22 @@ def test_load():
 
     assert eff_cal_1 == eff_cal_2
 # ------------------------------------------------------
-def test_read():
+def test_read(benchmark):
     '''
     Will test reading of efficiencies
     '''
 
-    d_fit   = _load_yaml('tests/efficiency_calculator_simple.yaml')
+    d_fit   = _load_yaml('tests/efficiency_calculator_large.yaml')
     eff_cal = EfficiencyCalculator()
 
     for cut, d_yld in d_fit.items():
         eff_cal[cut] = d_yld
 
-    d_data = {'x' : numpy.random.uniform(0, 5, 1000)}
+    d_data = {
+            'x' : numpy.random.uniform(0, 5, 10000),
+            'y' : numpy.random.uniform(0, 5, 10000),
+            }
 
     rdf     = RDF.FromNumpy(d_data)
-    arr_eff = eff_cal.read_eff(rdf)
+    arr_eff = benchmark(eff_cal.read_eff, rdf)
 # ------------------------------------------------------
