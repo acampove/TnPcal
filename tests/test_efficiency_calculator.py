@@ -8,12 +8,6 @@ import yaml
 from tnpcal.efficiency_calculator import EfficiencyCalculator
 
 # ------------------------------------------------------
-class Data:
-    '''
-    Class storing shared data for tests
-    '''
-
-# ------------------------------------------------------
 def  _make_out_dir(name : str):
     '''
     Will make directory where output of test goes
@@ -39,17 +33,45 @@ def _load_yaml(path : str):
 
     return data
 # ------------------------------------------------------
-def test_simple():
+def test_set_yields():
     '''
-    Simple test for inteface
+    Simple test passing yields
     '''
-    d_fit = _load_yaml('tests/efficiency_calculator_simple.yaml')
+    d_fit   = _load_yaml('tests/efficiency_calculator_simple.yaml')
+    eff_cal = EfficiencyCalculator()
 
-    eff_cal          = EfficiencyCalculator()
+    for cut, d_yld in d_fit.items():
+        eff_cal[cut] = d_yld
+# ------------------------------------------------------
+def test_serialize():
+    '''
+    Test serialization
+    '''
+    d_fit   = _load_yaml('tests/efficiency_calculator_simple.yaml')
+    eff_cal = EfficiencyCalculator()
 
     for cut, d_yld in d_fit.items():
         eff_cal[cut] = d_yld
 
-    out_dir = _make_out_dir('simple')
+    out_dir = _make_out_dir('serialize')
     eff_cal.save(path = f'{out_dir}/efficiencies.json')
+# ------------------------------------------------------
+def test_load():
+    '''
+    Will test creating an EfficiencyCalculator object from JSON
+    '''
+    d_fit     = _load_yaml('tests/efficiency_calculator_simple.yaml')
+    eff_cal_1 = EfficiencyCalculator()
+
+    for cut, d_yld in d_fit.items():
+        eff_cal_1[cut] = d_yld
+
+    out_dir   = _make_out_dir('load')
+    json_path = f'{out_dir}/efficiencies.json'
+
+    eff_cal_1.save(path = json_path)
+
+    eff_cal_2 = EfficiencyCalculator.from_json(json_path)
+
+    assert eff_cal_1 == eff_cal_2
 # ------------------------------------------------------
