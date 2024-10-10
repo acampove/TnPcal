@@ -8,8 +8,8 @@ import yaml
 import numpy
 import pytest
 
+from dmu.dataframe.dataframe      import DataFrame
 from dmu.logging.log_store        import LogStore
-from ROOT                         import RDF
 from tnpcal.efficiency_calculator import EfficiencyCalculator
 
 # ------------------------------------------------------
@@ -100,6 +100,6 @@ def test_read(benchmark):
             'y' : numpy.random.uniform(0, 5, 10000),
             }
 
-    rdf     = RDF.FromNumpy(d_data)
-    arr_eff = benchmark(eff_cal.read_eff, rdf)
+    df      = DataFrame(d_data)
+    arr_eff = benchmark(eff_cal.read_eff, df)
 # ------------------------------------------------------
