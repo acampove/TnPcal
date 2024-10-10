@@ -5,8 +5,8 @@ Module containing EfficiencyCalculator class
 import os
 import json
 
-from ROOT                  import RDataFrame
-from dmu.logging.log_store import LogStore
+from dmu.dataframe.dataframe import DataFrame
+from dmu.logging.log_store   import LogStore
 
 log = LogStore.add_logger('tnpcal:efficiency_calculator')
 # -----------------------------------------
@@ -66,7 +66,7 @@ class EfficiencyCalculator:
 
         l_cut = list(self._d_data)
         l_eff = [ self._get_eff(cut) for cut      in            l_cut ]
-        l_exp = [ f'int({cut}) * {eff}' for cut, eff in zip(l_cut, l_eff)]
+        l_exp = [ f'({cut}) * {eff}' for cut, eff in zip(l_cut, l_eff)]
 
         return ' + '.join(l_exp)
     #--------------------------------------------
@@ -84,17 +84,17 @@ class EfficiencyCalculator:
 
         return eff
     #--------------------------------------------
-    def read_eff(self, rdf : RDataFrame):
+    def read_eff(self, df : DataFrame):
         '''
-        Take ROOT dataframe, return numpy array of efficiencies
+        Take dmu Dataframe, return numpy array of efficiencies
         '''
 
         eff_name = 'temporary_column_holding_efficiencies'
         log.debug(f'Using {eff_name} to dump efficiencies')
 
         cut      = self._get_cut_expr()
-        rdf      = rdf.Define(eff_name, cut)
-        arr_eff  = rdf.AsNumpy([eff_name])[eff_name]
+        df       = df.define(eff_name, cut)
+        arr_eff  = df[eff_name].to_numpy()
 
         return arr_eff
     #--------------------------------------------
